@@ -24,7 +24,7 @@ export default async function MyJuorneyPage() {
   const bookmarkedCompanions = await getBookmarkedCompanions(user.id);
 
   return (
-    <main className='container mx-auto px-4 sm:px-6 xl:px-0'>
+    <main className='container mx-auto max-w-7xl px-4 sm:px-6 xl:px-0'>
       <section className='flex justify-between gap-4 max-sm:flex-col items-center'>
         <div className='flex gap-4 items-center'>
           <Image
