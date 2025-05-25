@@ -1,6 +1,7 @@
 'use client';
 
 import soundwaves from '@/constants/soundwaves.json';
+import { addToSessionHistory } from '@/lib/actions/companion.actions';
 import { cn, configureAssistant, getSubjectColor } from '@/lib/utils';
 import { vapi } from '@/lib/vapi.sdk';
 import Lottie, { LottieRefCurrentProps } from 'lottie-react';
@@ -15,7 +16,16 @@ enum CallStatus {
 }
 
 export default function CompanionComponent(props: CompanionComponentProps) {
-  const { subject, topic, name, userName, userImage, style, voice } = props;
+  const {
+    companionId,
+    subject,
+    topic,
+    name,
+    userName,
+    userImage,
+    style,
+    voice,
+  } = props;
 
   const [callStatus, setCallStatus] = useState<CallStatus>(CallStatus.INACTIVE);
   const [isSpeaking, setIsSpeaking] = useState(false);
@@ -37,7 +47,10 @@ export default function CompanionComponent(props: CompanionComponentProps) {
   useEffect(() => {
     const onCallStart = () => setCallStatus(CallStatus.ACTIVE);
 
-    const onCallEnd = () => setCallStatus(CallStatus.FINISHED);
+    const onCallEnd = async () => {
+      setCallStatus(CallStatus.FINISHED);
+      await addToSessionHistory(companionId);
+    };
 
     const onMessage = (message: Message) => {
       if (message.type === 'transcript' && message.transcriptType === 'final') {
@@ -67,7 +80,7 @@ export default function CompanionComponent(props: CompanionComponentProps) {
       vapi.off('speech-start', onSpeechStart);
       vapi.off('speech-end', onSpeechEnd);
     };
-  }, []);
+  }, [companionId]);
 
   const toggleMicrophone = () => {
     const isMuted = vapi.isMuted();
