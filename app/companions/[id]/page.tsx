@@ -3,7 +3,7 @@ import { getCompanion } from '@/lib/actions/companion.actions';
 import { getSubjectColor } from '@/lib/utils';
 import { currentUser } from '@clerk/nextjs/server';
 import Image from 'next/image';
-import { redirect } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 
 interface CompanionSessionPageProps {
   params: Promise<{ id: string }>;
@@ -16,21 +16,19 @@ export default async function CompanionSessionPage({
   const companion = await getCompanion(id);
   const user = await currentUser();
 
-  const { name, subject, title, topic, duration } = companion;
-
   if (!user) redirect('/sign-in');
-  if (!name) redirect('/companions');
+  if (!companion) return notFound();
 
   return (
-    <main>
+    <main className='container mx-auto max-w-7xl px-4 sm:px-6 xl:px-0'>
       <article className='flex rounded-border justify-between p-6 max-md:flex-col'>
         <div className='flex items-center gap-2'>
           <div
             className='size-[72px] flex items-center justify-center rounded-lg max-md:hidden'
-            style={{ backgroundColor: getSubjectColor(subject) }}>
+            style={{ backgroundColor: getSubjectColor(companion.subject) }}>
             <Image
-              src={`/icons/${subject}.svg`}
-              alt={subject}
+              src={`/icons/${companion.subject}.svg`}
+              alt={companion.subject}
               width={35}
               height={35}
             />
@@ -38,14 +36,16 @@ export default async function CompanionSessionPage({
 
           <div className='flex flex-col gap-2'>
             <div className='flex items-center gap-2'>
-              <p className='font-bold text-2xl'>{name}</p>
-              <div className='subject-badge max-sm:hidden'>{subject}</div>
+              <p className='font-bold text-2xl'>{companion.name}</p>
+              <div className='subject-badge max-sm:hidden'>
+                {companion.subject}
+              </div>
             </div>
-            <p className='text-lg'>{topic}</p>
+            <p className='text-lg'>{companion.topic}</p>
           </div>
         </div>
         <div className='items-start text-2xl max-md:hidden'>
-          {duration} minutes
+          {companion.duration} minutes
         </div>
       </article>
 

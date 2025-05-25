@@ -6,13 +6,14 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { SelectCompanion } from '@/database/schemas';
 import { cn, getSubjectColor } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
 
 interface CompanionsListProps {
   title: string;
-  companions?: Companion[];
+  companions?: SelectCompanion[];
   classNames?: string;
 }
 
@@ -23,7 +24,7 @@ export default function CompanionsList({
 }: CompanionsListProps) {
   return (
     <article className={cn('companion-list', classNames)}>
-      <h2 className='font-bold text-3xl'>Recent Sessions</h2>
+      <h2 className='font-bold text-3xl'>{title}</h2>
 
       <Table>
         <TableHeader>

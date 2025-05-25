@@ -13,7 +13,7 @@ interface CompanionCardProps {
   subject: string;
   duration: number;
   color: string;
-  bookmarked: boolean;
+  isBookmarked: boolean;
 }
 
 export default function CompanionCard({
@@ -23,13 +23,13 @@ export default function CompanionCard({
   subject,
   duration,
   color,
-  bookmarked,
+  isBookmarked,
 }: CompanionCardProps) {
   const pathname = usePathname();
   const user = useUser();
 
   async function handleBookmark() {
-    if (bookmarked) {
+    if (isBookmarked) {
       await removeBookmark(id, pathname);
     } else {
       await addBookmark(id, pathname);
@@ -45,7 +45,7 @@ export default function CompanionCard({
             <button className='companion-bookmark' onClick={handleBookmark}>
               <Image
                 src={
-                  bookmarked
+                  isBookmarked
                     ? '/icons/bookmark-filled.svg'
                     : '/icons/bookmark.svg'
                 }
@@ -60,7 +60,7 @@ export default function CompanionCard({
             <button className='companion-bookmark'>
               <Image
                 src={
-                  bookmarked
+                  isBookmarked
                     ? '/icons/bookmark-filled.svg'
                     : '/icons/bookmark.svg'
                 }

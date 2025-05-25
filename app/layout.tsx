@@ -20,7 +20,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider appearance={{ variables: { colorPrimary: '#fe5933' } }}>
+    <ClerkProvider
+      appearance={{
+        layout: {
+          unsafe_disableDevelopmentModeWarnings: true,
+        },
+        variables: { colorPrimary: '#fe5933' },
+      }}>
       <html lang='en'>
         <body className={`${bricolage.variable} antialiased relative`}>
           <Navbar />
