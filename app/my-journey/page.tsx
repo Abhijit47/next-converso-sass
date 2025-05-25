@@ -6,7 +6,7 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import {
-  // getBookmarkedCompanions,
+  getBookmarkedCompanions,
   getUserCompanions,
   getUserSessions,
 } from '@/lib/actions/companion.actions';
@@ -21,7 +21,7 @@ export default async function MyJuorneyPage() {
 
   const companions = await getUserCompanions(user.id);
   const sessionHistory = await getUserSessions(user.id);
-  // const bookmarkedCompanions = await getBookmarkedCompanions(user.id);
+  const bookmarkedCompanions = await getBookmarkedCompanions(user.id);
 
   return (
     <main className='min-lg:w-3/4'>
@@ -65,7 +65,7 @@ export default async function MyJuorneyPage() {
         </div>
       </section>
       <Accordion type='multiple'>
-        {/* <AccordionItem value='bookmarks'>
+        <AccordionItem value='bookmarks'>
           <AccordionTrigger className='text-2xl font-bold'>
             Bookmarked Companions {`(${bookmarkedCompanions.length})`}
           </AccordionTrigger>
@@ -75,7 +75,7 @@ export default async function MyJuorneyPage() {
               title='Bookmarked Companions'
             />
           </AccordionContent>
-        </AccordionItem> */}
+        </AccordionItem>
         <AccordionItem value='recent'>
           <AccordionTrigger className='text-2xl font-bold'>
             Recent Sessions
